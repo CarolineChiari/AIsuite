@@ -1,0 +1,251 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Global color theme variables */
+:root {
+}
+
+.dark {
+  --primary-color: #1a1c21;
+  --secondary-color: #282a36;
+  --text-color: #eff0f5;
+  --text-color-secondary: #bfc1c9;
+  --accent-color: #f48fb1;
+  --hover-color: #3c3f4b;
+  --border-color: #33363f;
+  --success-color: #50c878;
+  --error-color: #ff5555;
+  --warning-color: #ffb86c;
+  --info-color: #8be9fd;
+  --transition-duration: 250ms;
+  --border-radius: 4px;
+  --border: 1px solid var(--border-color);
+  --border-color: white;
+  --border-section: 2px solid rgba(255,255,255,0.25);
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --padding: 10px;
+
+  --backdrop-filter: blur(5px);
+  --border-radius-chat: 26px;
+  --clay-box-shadow: inset 1.8px 3.12px 4.92px -0.61px rgba(0, 0, 0, 0.15),
+    inset -2.7px -4.68px 4.92px -0.61px rgba(0, 0, 0, 0.3),
+    5.4px 9.35px 3.69px -1.84px rgba(0, 0, 0, 0.6);
+  /* --clay-box-shadow: 35px 35px 68px 0px rgba(0, 0, 0, 0.5),
+    inset -8px -8px 16px 0px rgba(0, 0, 0, 0.6),
+    inset 0px 11px 28px 0px rgb(0, 0, 0); */
+
+  --markdown-background: rgb(64, 64, 64);
+  --markdown-code-background: rgb(64, 64, 64);
+  --clay-border: 1px solid rgba(0, 0, 0, 0.5);
+
+  --interface-background: linear-gradient(to bottom, #2c2f37, #1a1c21);
+
+  --inset-background: linear-gradient(145deg, #17191e, #1c1e23);
+  --inset-box-shadow: 20px 20px 60px #16181c, -20px -20px 60px #1e2026;
+  --disabled-background-color: var(--info-color);
+  --disabled-text-color: var(--primary-color);
+  --disabled-border: 3px solid var(--accent-color);
+
+  --router-link-active-color: var(--accent-color);
+  --router-link-active-text-shadow: 0 0 10px var(--accent-color);
+
+  --text-shadow: 2px 1px 2px black;
+}
+
+.light {
+  --primary-color: #ffffff;
+  --secondary-color: #f0f0f5;
+  --text-color: #1a1c21;
+  --text-color-secondary: #404148;
+  --accent-color: #f48fb1;
+  --hover-color: #cfcfd9;
+  --border-color: #d0d1d6;
+  --success-color: #50c878;
+  --error-color: #ff5555;
+  --warning-color: #ffb86c;
+  --info-color: #8be9fd;
+  --transition-duration: 250ms;
+  --border-radius: 4px;
+  --border: 1px solid var(--border-color);
+  --border-color: black;
+  --border-section: 2px solid rgba(0,0,0,0.25);
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --padding: 10px;
+
+  --backdrop-filter: blur(5px);
+  --border-radius-chat: 26px;
+  --clay-box-shadow: inset 1.8px 3.12px 4.92px -0.61px rgba(0, 0, 0, 0.15),
+    inset -2.7px -4.68px 4.92px -0.61px rgba(0, 0, 0, 0.3),
+    5.4px 9.35px 3.69px -1.84px rgba(0, 0, 0, 0.6);
+  /* --clay-box-shadow: 35px 35px 68px 0px rgba(145, 192, 255, 0.5),
+    inset -8px -8px 16px 0px rgba(145, 192, 255, 0.6),
+    inset 0px 11px 28px 0px rgb(255, 255, 255); */
+
+  --markdown-background: rgb(191, 191, 191);
+  --markdown-code-background: rgb(191, 191, 191);
+  --clay-border: 1px solid rgba(100, 100, 100, 0.2);
+
+  --interface-background: linear-gradient(to bottom, #f5f5f5, #e0e0e0);
+
+  --inset-background: linear-gradient(145deg, #e6e6e6, #ffffff);
+  --inset-box-shadow: inset 20px 20px 60px #d9d9d9,
+    inset -20px -20px 60px #ffffff;
+  --disabled-background-color: var(--info-color);
+  --disabled-text-color: var(--primary-color);
+  --disabled-border: 3px solid var(--accent-color);
+
+  --router-link-active-color: var(--accent-color);
+  --router-link-active-text-shadow: 0 0 10px var(--accent-color);
+
+  --text-shadow: 2px 1px 2px white;
+}
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  transition: background-color var(--transition-duration);
+  color: var(--text-color);
+}
+
+body {
+  background: var(--primary-color);
+  background: var(--interface-background);
+}
+
+a {
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+input,
+button {
+  font-family: inherit;
+}
+
+button {
+  all: unset;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  padding: 12px 24px;
+  transition: all var(--transition-duration);
+
+  border: var(--border);
+  /* border-radius: 5px; */
+  /* padding: 10px; */
+  text-align: center;
+}
+
+button:hover,
+button:focus {
+  background-color: var(--hover-color);
+  outline: none;
+  box-shadow: var(--box-shadow);
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.card {
+  background-color: var(--secondary-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.card + .card {
+  margin-top: 12px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.subtitle {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--text-color-secondary);
+}
+
+.hr {
+  border: 0;
+  border-top: 1px solid var(--border-color);
+  margin: 16px 0;
+}
+
+input {
+  background-color: var(--secondary-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  color: var(--text-color);
+  padding: 12px 16px;
+  transition: border-color var(--transition-duration);
+}
+
+textarea {
+  width: 100%; /* Takes full width of container */
+  min-height: 100%; /* Takes full height of container */
+  resize: none; /* Prevents resizing by user */
+  padding: 5px; /* Minimum padding */
+  box-sizing: border-box; /* Includes padding in width and height calculation */
+  padding: clamp(5px, 1vw, 10px); /* Responsive padding */
+
+  background-color: var(--secondary-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  color: var(--text-color);
+  padding: 12px 16px;
+  transition: border-color var(--transition-duration);
+}
+
+.dark *::-webkit-scrollbar,
+.light *::-webkit-scrollbar {
+  width: 0.5em;
+  height: 0.5em;
+}
+
+.dark *::-webkit-scrollbar-track,
+.light *::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.dark *::-webkit-scrollbar-thumb,
+.light *::-webkit-scrollbar-thumb {
+  /* backdrop-filter: blur(5px); */
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 26px;
+  box-shadow: 35px 35px 68px 0px rgba(0, 0, 0, 0.5),
+    inset -8px -8px 16px 0px rgba(0, 0, 0, 0.6),
+    inset 0px 11px 28px 0px rgb(255, 255, 255);
+}
+
+/*
+
+body::-webkit-scrollbar-thumb {
+  backdrop-filter: blur(2px);
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 32px;
+  box-shadow: 35px 35px 68px 0px rgba(145, 192, 255, 0.5),
+    inset -12px -12px 16px 0px rgba(145, 192, 255, 0.6),
+    inset 0px 11px 28px 0px rgb(255, 255, 255);
+} */
+
+/* code {
+  font-family: monospace;
+  background-color: rgba(255,255,255,0.25);
+  padding: 5px;
+  border: 1px solid white;
+  display: block;
+} */

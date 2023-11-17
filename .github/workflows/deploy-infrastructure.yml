@@ -1,0 +1,126 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/azure/functions-action
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Deploy Infrastructure
+
+on:
+  pull_request:
+    types: [synchronize, opened, closed]
+    branches:
+      - main
+    paths:
+      - "infrastructure/Azure/**"
+      - ".github/workflows/deploy-infrastructure.yml"
+  workflow_dispatch:
+
+env:
+  INFRASTRUCTURE_PATH: "./infrastructure/Azure" # set this to the path to your web app project, defaults to the repository root
+  NODE_VERSION: "14.x" # set this to the node version to use (supports 8.x, 10.x, 12.x)
+  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  container_name: ${{ secrets.INFRASTRUCTURE_CONTAINER_NAME}}
+  storage_account_name: ${{ secrets.INFRASTRUCTURE_STORAGE_ACCOUNT_NAME}}
+  key: ${{secrets.INFRASTRUCTURE_KEY }}
+  access_key: ${{secrets.INFRASTRUCTURE_STORAGE_ACCOUNT_KEY }}
+
+jobs:
+  Plan:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ env.INFRASTRUCTURE_PATH}}
+    steps:
+      - name: "Checkout GitHub Action"
+        uses: actions/checkout@v2
+
+      - name: Setup Node ${{ env.NODE_VERSION }} Environment
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Terraform setup
+        id: terraform_setup
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.3.3
+
+      - name: Terraform check format
+        id: terraform_fmt
+        run: terraform fmt -check -recursive
+
+      - name: Terraform init
+        id: terraform_init
+        run: >
+          terraform init
+          -backend-config=storage_account_name=${{ env.storage_account_name}}
+          -backend-config=container_name=${{ env.container_name }}
+          -backend-config=key=${{ env.key }}
+          -backend-config=access_key=${{ env.access_key }}
+
+      - name: Terraform validate
+        id: terraform_validate
+        run: terraform validate
+
+      - name: Terraform plan
+        id: terraform_plan
+        run: >
+          terraform plan
+          -var 'tenant_id=${{ env.ARM_TENANT_ID }}'
+          -var-file="Settings/backend.tfvars"
+          -var-file="Settings/frontend.tfvars"
+          -var-file="Settings/general.tfvars"
+        continue-on-error: true
+
+  Apply:
+    runs-on: ubuntu-latest
+    needs: [Plan]
+    if: github.event.pull_request.merged == true
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ env.INFRASTRUCTURE_PATH}}
+    steps:
+      - name: "Checkout GitHub Action"
+        uses: actions/checkout@v2
+
+      - name: Setup Node ${{ env.NODE_VERSION }} Environment
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Terraform setup
+        id: terraform_setup
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.3.3
+
+      - name: Terraform check format
+        id: terraform_fmt
+        run: terraform fmt -check -recursive
+
+      - name: Terraform init
+        id: terraform_init
+        run: >
+          terraform init
+          -backend-config=storage_account_name=${{ env.storage_account_name}}
+          -backend-config=container_name=${{ env.container_name }}
+          -backend-config=key=${{ env.key }}
+          -backend-config=access_key=${{ env.access_key }}
+
+      - name: Terraform validate
+        id: terraform_validate
+        run: terraform validate
+
+      - name: Terraform Apply
+        id: terraform_apply
+        run: >
+          terraform apply 
+          --auto-approve
+          -var 'tenant_id=${{ env.ARM_TENANT_ID }}'
+          -var-file="Settings/backend.tfvars"
+          -var-file="Settings/frontend.tfvars"
+          -var-file="Settings/general.tfvars"
+        continue-on-error: true

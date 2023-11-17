@@ -1,0 +1,79 @@
+<div class="main">
+  <div class="history" #history>
+    <!-- <div class="history" (scroll)="historyScroll()" #history> -->
+    <button class="new" (click)="startNewConversation()">
+      New Conversation
+    </button>
+    <app-history></app-history>
+  </div>
+  <div class="chat">
+    <div class="conversation" #chatContainer>
+      <!-- <markdown lineNumbers [src]="conv.content" *ngFor="let conv of conversation.messages"> </markdown> -->
+      <ng-container *ngIf="conversation.messages.length > 0">
+        <ng-container
+          *ngFor="let conv of conversation.messages; let last = last; let i = index"
+        >
+          <div [class]="['message', conv.role]" *ngIf="conv.role !== 'system'">
+            <!-- <markdown lineNumbers>{{conv.content}}</markdown> -->
+            <div class="controls top" *ngIf="last && conv.role != 'user'">
+              <span [class]="['material-symbols-outlined', 'action']" (click)="upgrade()">
+                upgrade
+              </span>
+              <span [class]="['material-symbols-outlined', 'action']" (click)="refresh()">
+                refresh
+              </span>
+            </div>
+            <!-- <div class="controls top" *ngIf="i == conversation.messages.length-1">
+              <span [class]="['material-symbols-outlined', 'action']" (click)="upgrade()">
+                upgrade
+              </span>
+              <span [class]="['material-symbols-outlined', 'action']" (click)="refresh()">
+                refresh
+              </span>
+            </div> -->
+            <div class="markdown" markdown [data]="conv.content"></div>
+            <!-- <div markdown [innerText]="conv.content"></div> -->
+          </div>
+
+        </ng-container>
+      </ng-container>
+      <div class="message assistant waiting" *ngIf="waiting">
+        <!-- {{waiting}} -->
+      </div>
+    </div>
+    <div class="prompt">
+      <div class="controls">
+        <button
+          [class]="[
+            'material-symbols-outlined',
+            'action',
+            hasMessage() ? 'active' : 'deactivated'
+          ]"
+          [disabled]="!hasMessage() || recordingInProgress"
+          (click)="sendMessage($event)"
+        >
+          send
+        </button>
+        <span
+          [class]="['material-symbols-outlined', 'action']"
+          *ngIf="hasMic"
+          (click)="startStt()"
+        >
+          mic
+        </span>
+      </div>
+      <!-- input -->
+      <!-- <div class="input"> -->
+      <textarea
+        type="text"
+        placeholder="Type your message here"
+        [(ngModel)]="message"
+        (keyup)="sendKey($event)"
+        [disabled]="recordingInProgress"
+        [class]="[getRecordingStatusClass()]"
+        id="chatInput"
+      ></textarea>
+      <!-- </div> -->
+    </div>
+  </div>
+</div>

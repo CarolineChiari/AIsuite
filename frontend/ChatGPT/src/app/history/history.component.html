@@ -1,0 +1,13 @@
+<!-- duplicates: {{checkDuplicates()}} -->
+<div class="history" *ngFor="let conv of reversedConversations">
+  <div class="item" (click)="setConversation(conv.id)">
+    {{ conv.title ? conv.title : "New Conversation" }}
+  </div>
+  <!-- <div class="actions"> -->
+  <span
+    [class]="['material-symbols-outlined', 'actions', toBeDeleted(conv.id)]"
+    (click)="delete(conv.id)"
+  >
+    delete
+  </span>
+</div>

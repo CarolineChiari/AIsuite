@@ -1,0 +1,92 @@
+.main {
+  width: 100%;
+  height: 100%;
+}
+
+.section {
+  width: 100%;
+  height: fit-content;
+  border: var(--border-section);
+  border-radius: 10px;
+  padding: 10px;
+  margin: 5px;
+}
+
+.section .title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+/* Themes */
+.outerTheme {
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  box-shadow: var(--clay-box-shadow);
+  cursor: pointer;
+  position:relative;
+}
+.themes {
+  width: 75%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.theme {
+  height: 50px;
+  width: 50px;
+  background: red;
+  border-radius: 25px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.current {
+  box-shadow: 2px 2px 12px var(--accent-color);
+}
+.overlay {
+  position: absolute;
+  /* background: red; */
+  border-radius: 25px;
+  width: 50px;
+  height: 50px;
+  --backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  }
+.primary {
+  background-color: var(--primary-color);
+  height: 25px;
+  width: 25px;
+  border-top-left-radius: 25px;
+}
+.secondary {
+  background-color: var(--secondary-color);
+  height: 25px;
+  width: 25px;
+  border-top-right-radius: 25px;
+}
+.text {
+  background-color: var(--text-color);
+  height: 25px;
+  width: 25px;
+  border-bottom-left-radius: 25px;
+}
+.accent {
+  background-color: var(--accent-color);
+  height: 25px;
+  width: 25px;
+  border-bottom-right-radius: 25px;
+}
+.label {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  /* background: red; */
+  top: 1px;
+  text-shadow: 1px 1px 1px black;
+  }

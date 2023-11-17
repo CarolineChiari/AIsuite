@@ -1,0 +1,40 @@
+.banner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.username {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+}
+.usage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+}
+.tabs {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 60%;
+}
+
+:host {
+  width: 100%;
+}
+
+.tab {
+  font-size: clamp(10px, 3vh, 23px);
+  cursor: pointer;
+}
+
+.active {
+  text-shadow: 1px 1px var(--accent-color), 1px 1px 4px rgba(0, 0, 0, 0.25);
+}

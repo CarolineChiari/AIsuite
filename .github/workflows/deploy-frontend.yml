@@ -1,0 +1,96 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/azure/functions-action
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Deploy Frontend
+
+on:
+  pull_request:
+    types: [synchronize, opened, closed]
+    branches:
+      - main
+    paths:
+      - "frontend/**"
+      - ".github/workflows/deploy-frontend.yml"
+  workflow_dispatch:
+
+env:
+  PROJECT_PATH: "/frontend/ChatGPT/" # set this to the path to your web app project, defaults to the repository root
+  BUILD_PATH: "./dist/chat-gpt/" # set this to the path to your web app project, defaults to the repository root
+  NODE_VERSION: "14.x" # set this to the node version to use (supports 8.x, 10.x, 12.x)
+  storage_account_name: ${{ secrets.FRONTEND_STORAGE_ACCOUNT_NAME}}
+  storage_key: ${{ secrets.FRONTEND_STORAGE_ACCOUNT_KEY }}
+  environment_settings: ${{ secrets.ENVIRONMENT_SETTINGS }}
+
+  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  
+  
+  key: ${{secrets.INFRASTRUCTURE_KEY }}
+  access_key: ${{secrets.INFRASTRUCTURE_STORAGE_ACCOUNT_KEY }}
+  
+
+jobs:
+  Apply:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ github.workspace }}${{ env.PROJECT_PATH}}
+    steps:
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@v2
+
+      - name: Setup Node ${{ env.NODE_VERSION }} Environment
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: 'Resolve Project Dependencies Using Npm'
+        shell: bash
+        run: |    
+          mkdir ./src/environments/
+          echo "${{ env.environment_settings }}" > ./src/environments/environment.ts
+          echo "${{ env.environment_settings }}" > ./src/environments/environment.prod.ts
+          ls /home/runner/work/ChatGPT_Clone/ChatGPT_Clone/frontend/ChatGPT/src/environments/
+          npm install
+          npm run build --if-present
+      
+      - name: 'Build'
+        id: build
+        shell: pwsh
+        run: |
+          install-module Az.Storage -force
+          #cd './${{ env.FRONTEND_PATH }}'
+          #npm install -g @angular/cli
+          write-host "===== Done with cli! ====="
+          #npm install
+          write-host "===== Done with install! ====="
+          #ng build --aot
+          write-host "===== Done with build! ====="
+          $output = "${{ env.BUILD_PATH }}"
+          $context = New-AzStorageContext -StorageAccountName "${{env.storage_account_name}}" -StorageAccountKey "${{env.storage_key}}"
+          write-host $output
+          write-host "===== Uploading! ====="
+          get-childitem $output -recurse -file | foreach-object{
+            $container = "`$web"
+            $blob = $_.fullname.replace((resolve-path $output).path,"")
+            write-host "Uploading $($_.fullname) to $container/$blob"
+            if ($_.name -like "*.html"){
+              Set-AzStorageBlobContent -file $_.fullname -context $context -container "`$web" -force -Properties @{"ContentType" = "text/html"} -blob $blob
+            }elseif ($_.name -like "*.js"){
+              Set-AzStorageBlobContent -file $_.fullname -context $context -container "`$web" -force -Properties @{"ContentType" = "text/javascript"} -blob $blob
+            }elseif ($_.name -like "*.css"){
+              Set-AzStorageBlobContent -file $_.fullname -context $context -container "`$web" -force -Properties @{"ContentType" = "text/css"} -blob $blob
+            }elseif ($_.name -like "*.png"){
+              Set-AzStorageBlobContent -file $_.fullname -context $context -container "`$web" -force -Properties @{"ContentType" = "image/png"} -blob $blob
+            }elseif ($_.name -like "*.ico"){
+              Set-AzStorageBlobContent -file $_.fullname -context $context -container "`$web" -force -Properties @{"ContentType" = "image/x-icon"} -blob $blob
+            }else{
+              Set-AzStorageBlobContent -file $_.fullname -context $context -container "`$web" -force -blob $blob
+            }
+            
+            write-host "===== Done! ====="
+          }

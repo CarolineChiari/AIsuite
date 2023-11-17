@@ -1,0 +1,30 @@
+<div class="main">
+  <div class="section">
+    <div class="title">General</div>
+    <label>Theme</label>
+    <div class="themes">
+      <div
+        *ngFor="let theme of themes"
+        class="outerTheme"
+        (click)="selectTheme(theme)"
+        [class]="[settings?.theme == theme ? 'current' : '']"
+      >
+
+        <div [class]="[theme, 'theme']">
+          <div class="overlay"></div>
+          <div class="primary"></div>
+          <div class="secondary"></div>
+          <div class="text"></div>
+          <div class="accent"></div>
+        </div>
+        <div class="label">{{ getThemeName(theme) }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="title">Chat</div>
+  </div>
+  <div class="section">
+    <div class="title">Speech</div>
+  </div>
+</div>

@@ -1,0 +1,32 @@
+<div class="banner">
+  <div class="username" *ngIf="!expired" theme-toggler [routerLink]="['/user']">
+    {{ account }}
+  </div>
+  <div class="tabs">
+    <div class="tab" [routerLink]="['/chat']" [routerLinkActive]="['active']">
+      Chat
+    </div>
+    <div
+      class="tab"
+      [routerLink]="['/formulas']"
+      [routerLinkActive]="['active']"
+    >
+      Formulas
+    </div>
+    <div
+      class="tab"
+      [routerLink]="['/speech']"
+      [routerLinkActive]="['active']"
+    >
+      Speech
+    </div>
+    <!-- <div
+      class="tab"
+      [routerLink]="['/assistant']"
+      [routerLinkActive]="['active']"
+    >
+      Assistant
+    </div> -->
+  </div>
+  <div class="usage">Usage MTD: ${{ usage }}</div>
+</div>
